@@ -30,6 +30,42 @@
 #include "GblPoint.h"
 using namespace Eigen;
 
+const int NROW = 5;
+const int NCOL = 5;
+
+/*
+extern "C" gbl::GblPoint *GblPointCtor2D(double matrix[NROW][NCOL]);
+gbl::GblPoint* GblPointCtor2D(double matrix[NROW][NCOL]) {
+    gbl::Matrix5d jacobian;
+    for (int i{0}; i < NROW; i++) {
+        for (int j{0}; j < NCOL; j++) {
+            jacobian(i, j) = matrix[i][j];
+        }
+    }
+
+    return new gbl::GblPoint(jacobian);
+}
+
+*/
+
+extern "C" gbl::GblPoint *GblPointCtor(double matrixArray[NROW*NCOL]);
+gbl::GblPoint* GblPointCtor(double matrixArray[NROW*NCOL]) {
+    gbl::Matrix5d jacobian;
+    std::cout<<"Constructor!"<<NROW<<" " << NCOL<<std::endl;
+    for (unsigned int i=0; i < NROW; ++i){
+        for (unsigned int j=0; j<NCOL; ++j) {
+            std::cout<<"i="<<i<<" j="<<j<<std::endl;
+            jacobian(i,j) = matrixArray[i*NCOL+j];
+        }
+    }
+    std::cout<<"Constructed"<<std::endl;
+    std::cout<<jacobian<<std::endl;
+}
+
+
+
+
+
 //! Namespace for the general broken lines package
 namespace gbl {
 
