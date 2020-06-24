@@ -9,8 +9,14 @@
 using namespace std;
 
 void example1();
+void example3();
+
+void exampleSit();
 
 int main() {
-	example1();
+
+    //example1();
+	//example3();
+    exampleSit();
 	return 0;
 }

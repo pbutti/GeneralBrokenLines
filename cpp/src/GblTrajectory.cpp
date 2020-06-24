@@ -1318,7 +1318,7 @@ void GblTrajectory::prepare() {
 	}
 
 	// external seed
-	if (externalPoint > 0) {
+	if (externalPoint != 0) {
 		std::pair<std::vector<unsigned int>, MatrixXd> indexAndJacobian =
 				getJacobian(externalPoint);
 		std::vector<unsigned int> externalSeedIndex = indexAndJacobian.first;
