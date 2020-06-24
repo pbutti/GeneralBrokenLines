@@ -60,6 +60,8 @@ gbl::GblPoint* GblPointCtor(double matrixArray[NROW*NCOL]) {
     }
     std::cout<<"Constructed"<<std::endl;
     std::cout<<jacobian<<std::endl;
+    return new gbl::GblPoint(jacobian);
+    
 }
 
 
