@@ -1,19 +1,41 @@
 #include "GblPoint.h"
 
-/*
-const int M = 5;
-const int N = 5;
 
+const int NROW = 5;
+const int NCOL = 5;
 
-extern "C" gbl::GblPoint *GblPointCtor(double matrix[M][N]); 
-gbl::GblPoint* GblPointCtor(double matrix[M][N]) { 
-    gbl::Matrix5d jacobian; 
-    for (int i{0}; i < M; i++) {
-        for (int j{0}; j < N; j++) { 
-            jacobian(i, j) = matrix[i][j]; 
+using namespace gbl;
+
+extern "C" gbl::GblPoint *GblPointCtor(double matrixArray[NROW*NCOL]);
+gbl::GblPoint* GblPointCtor(double matrixArray[NROW*NCOL]) {
+    gbl::Matrix5d jacobian;
+    std::cout<<"Constructor!"<<NROW<<" " << NCOL<<std::endl;
+    for (unsigned int i=0; i < NROW; ++i){
+        for (unsigned int j=0; j<NCOL; ++j) {
+            jacobian(i,j) = matrixArray[i*NCOL+j];
         }
     }
-
-    return new gbl::GblPoint(jacobian); 
+    std::cout<<"Constructed"<<std::endl;
+    std::cout<<jacobian<<std::endl;
+    return new gbl::GblPoint(jacobian);
+    
 }
-*/
+
+extern "C" unsigned int GblPoint_hasMeasurement(const GblPoint* self) {
+    return self->hasMeasurement();
+}
+
+
+extern "C" double GblPoint_getMeasPrecMin(const GblPoint* self) {
+    return self->getMeasPrecMin();
+}
+
+
+
+
+
+
+
+
+
+
