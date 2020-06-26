@@ -269,13 +269,12 @@ private:
 	Matrix5d nextJacobian; ///< Jacobian to next scatterer (or last measurement)
 	unsigned int measDim; ///< Dimension of measurement (1-5), 0 indicates absence of measurement
 	double measPrecMin; ///< Minimal measurement precision (for usage)
-	Matrix5d measProjection; ///< Projection from measurement to local system
-
-	Vector5d measResiduals; ///< Measurement residuals
-	Vector5d measPrecision; ///< Measurement precision (diagonal of inverse covariance matrix)
+	Matrix5d measProjection = Matrix5d::Zero(5,5); ///< Projection from measurement to local system
+	Vector5d measResiduals  = Vector5d::Zero(5); ///< Measurement residuals
+	Vector5d measPrecision  = Vector5d::Zero(5); ///< Measurement precision (diagonal of inverse covariance matrix)
 	bool transFlag; ///< Transformation exists?
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
-			Eigen::ColMajor /* default */, 5, 5> measTransformation; ///< Transformation of diagonalization (of meas. precision matrix)
+        Eigen::ColMajor /* default */, 5, 5> measTransformation; ///< Transformation of diagonalization (of meas. precision matrix)
 	bool scatFlag; ///< Scatterer present?
 	Eigen::Matrix2d scatTransformation; ///< Transformation of diagonalization (of scat. precision matrix)
 	Eigen::Vector2d scatResiduals; ///< Scattering residuals (initial kinks if iterating)
@@ -303,7 +302,8 @@ void GblPoint::addMeasurement(const Eigen::MatrixBase<Projection>& aProjection,
 			aPrecision };
 	measTransformation = measEigen.eigenvectors().transpose();
 	transFlag = true;
-	measResiduals.tail(measDim) = measTransformation * aResiduals;
+    
+    measResiduals.tail(measDim) = measTransformation * aResiduals;
 	measPrecision.tail(measDim) = measEigen.eigenvalues();
 	measProjection.bottomRightCorner(measDim, measDim) = measTransformation
 			* aProjection;
