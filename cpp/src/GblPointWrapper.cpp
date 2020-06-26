@@ -54,6 +54,22 @@ extern "C" {
         
         self->addMeasurement(aProjection, aResiduals, aPrecision, minPrecision);
     }
+
+    
+    //Only support vector precision
+    void GblPoint_addScatterer(GblPoint* self, double *resArray, double *precArray) {
+        
+        Map<Vector2d> aResiduals(resArray,2);
+        Map<Vector2d> aPrecision(precArray,2);
+        
+        std::cout<<"addScatterer"<<std::endl;
+        std::cout<<"scatterer\n"<<aResiduals<<std::endl;
+        std::cout<<"precision\n"<<aPrecision<<std::endl;
+        
+        self->addScatterer(aResiduals,aPrecision);
+    }
+        
+
 }
 
 
