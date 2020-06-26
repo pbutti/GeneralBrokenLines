@@ -9,13 +9,17 @@ using namespace gbl;
 using namespace Eigen;
 
 extern "C" { 
-    gbl::GblPoint* GblPointCtor(double matrixArray[NROW*NCOL]) {
-
+    GblPoint* GblPointCtor(double matrixArray[NROW*NCOL]) {
+        
         Map<Matrix5d> jacobian(matrixArray,5,5);
         std::cout<<"Constructor"<<std::endl;
         std::cout<<jacobian<<std::endl;
-        return new gbl::GblPoint(jacobian);
+        return new GblPoint(jacobian);
         
+    }
+    
+    void GblPoint_printPoint(const GblPoint* self, unsigned int level) {
+        self->printPoint(level);
     }
     
     unsigned int GblPoint_hasMeasurement(const GblPoint* self) {
@@ -51,7 +55,6 @@ extern "C" {
         std::cout<<aProjection<<std::endl;
         std::cout<<aResiduals<<std::endl;
         std::cout<<aPrecision<<std::endl;
-        
         self->addMeasurement(aProjection, aResiduals, aPrecision, minPrecision);
     }
 
