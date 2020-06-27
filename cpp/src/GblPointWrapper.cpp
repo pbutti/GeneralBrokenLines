@@ -12,8 +12,6 @@ extern "C" {
     GblPoint* GblPointCtor(double matrixArray[NROW*NCOL]) {
         
         Map<Matrix5d> jacobian(matrixArray,5,5);
-        std::cout<<"Constructor"<<std::endl;
-        std::cout<<jacobian<<std::endl;
         return new GblPoint(jacobian);
         
     }
@@ -34,7 +32,6 @@ extern "C" {
     //Just for test
     void GblPoint_addJacobian(const GblPoint* self, double *array, int rows, int cols) {
         Map<Matrix5d> jacobian(array,rows,cols);
-        std::cout<<jacobian<<std::endl;
     }
     
     //Only supporting:
@@ -51,10 +48,6 @@ extern "C" {
         Map<Vector2d> aResiduals(resArray, 2);
         Map<Vector2d> aPrecision(precArray,2);
         
-        std::cout<<"addMeasurement2D::"<<std::endl;
-        std::cout<<aProjection<<std::endl;
-        std::cout<<aResiduals<<std::endl;
-        std::cout<<aPrecision<<std::endl;
         self->addMeasurement(aProjection, aResiduals, aPrecision, minPrecision);
     }
 
@@ -64,10 +57,6 @@ extern "C" {
         
         Map<Vector2d> aResiduals(resArray,2);
         Map<Vector2d> aPrecision(precArray,2);
-        
-        std::cout<<"addScatterer"<<std::endl;
-        std::cout<<"scatterer\n"<<aResiduals<<std::endl;
-        std::cout<<"precision\n"<<aPrecision<<std::endl;
         
         self->addScatterer(aResiduals,aPrecision);
     }

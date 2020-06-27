@@ -151,6 +151,16 @@ using namespace Eigen;
 //! Namespace for the general broken lines package
 namespace gbl {
 
+
+    GblTrajectory::GblTrajectory(bool flagCurv, bool flagU1dir, bool flagU2dir) {
+        
+        numCurvature = flagCurv ? 1 : 0;
+        if (flagU1dir)
+            theDimension.push_back(0);
+        if (flagU2dir)
+            theDimension.push_back(1);
+    }
+
 /// Create new (simple) trajectory from list of points.
 /**
  * Curved trajectory in space (default) or without curvature (q/p) or in one
@@ -166,8 +176,8 @@ GblTrajectory::GblTrajectory(const std::vector<GblPoint> &aPointList,
 				0), numInnerTransOffsets(0), numCurvature(flagCurv ? 1 : 0), numParameters(
 				0), numLocals(0), numMeasurements(0), externalPoint(0), skippedMeasLabel(
 				0), maxNumGlobals(0), theDimension(0), thePoints(), theData(), measDataIndex(), scatDataIndex(), externalSeed(), innerTransformations(), externalDerivatives(), externalMeasurements(), externalPrecisions() {
-
-	if (flagU1dir)
+    
+    if (flagU1dir)
 		theDimension.push_back(0);
 	if (flagU2dir)
 		theDimension.push_back(1);
@@ -459,7 +469,7 @@ void GblTrajectory::construct() {
 
 	constructOK = true;
 	// number of fit parameters
-	numParameters =
+    numParameters =
 			(numOffsets - numInnerTransOffsets * numInnerTransformations)
 					* theDimension.size() + numCurvature + numLocals;
 }
@@ -573,7 +583,7 @@ std::pair<std::vector<unsigned int>, MatrixXd> GblTrajectory::getJacobian(
 		}
 	}
 
-	const GblPoint aPoint = thePoints[aTrajectory][aLabel - firstLabel];
+    const GblPoint aPoint = thePoints[aTrajectory][aLabel - firstLabel];
 	std::array<unsigned int, 5> labDer;
 	Matrix5d matDer;
 	getFitToLocalJacobian(labDer, matDer, aPoint, 5, nJacobian);
@@ -1412,11 +1422,12 @@ unsigned int GblTrajectory::fit(double &Chi2, int &Ndf, double &lostWeight,
 	buildLinearEquationSystem();
 	lostWeight = 0.;
 	unsigned int ierr = 0;
-	try {
 
-		theMatrix.solveAndInvertBorderedBand(theVector, theVector);
-		predict();
-
+    try {
+        
+        theMatrix.solveAndInvertBorderedBand(theVector, theVector);
+        predict();
+        
 		for (unsigned int i = 0; i < optionList.size(); ++i) // down weighting iterations
 				{
 			size_t aPosition = methodList.find(optionList[i]);

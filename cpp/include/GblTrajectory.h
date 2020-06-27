@@ -49,6 +49,11 @@ namespace gbl {
  */
 class GblTrajectory {
 public:
+
+    //make a constructor without passing the points
+    GblTrajectory(bool flagCurv, bool flagU1dir, bool flagU2dir);
+        
+    
 	GblTrajectory(const std::vector<GblPoint> &aPointList, bool flagCurv = true,
 			bool flagU1dir = true, bool flagU2dir = true);
 	GblTrajectory(
