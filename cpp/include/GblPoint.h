@@ -53,6 +53,7 @@ typedef Eigen::Matrix<double, 2, 5> Matrix25d;
 typedef Eigen::Matrix<double, 2, 7> Matrix27d;
 typedef Eigen::Matrix<double, 3, 2> Matrix32d;
 typedef Eigen::Matrix<double, 5, 5> Matrix5d;
+typedef Eigen::Matrix<double, 6, 6> Matrix6d;
 
 /// Point on trajectory
 /**
@@ -264,9 +265,9 @@ private:
 
 	unsigned int theLabel; ///< Label identifying point
 	int theOffset; ///< Offset number at point if not negative (else interpolation needed)
-	Matrix5d p2pJacobian; ///< Point-to-point jacobian from previous point
-	Matrix5d prevJacobian; ///< Jacobian to previous scatterer (or first measurement)
-	Matrix5d nextJacobian; ///< Jacobian to next scatterer (or last measurement)
+	Matrix5d p2pJacobian  = Matrix5d::Zero(5,5); ///< Point-to-point jacobian from previous point
+	Matrix5d prevJacobian = Matrix5d::Zero(5,5); ///< Jacobian to previous scatterer (or first measurement)
+	Matrix5d nextJacobian = Matrix5d::Zero(5,5); ///< Jacobian to next scatterer (or last measurement)
 	unsigned int measDim; ///< Dimension of measurement (1-5), 0 indicates absence of measurement
 	double measPrecMin; ///< Minimal measurement precision (for usage)
 	Matrix5d measProjection = Matrix5d::Zero(5,5); ///< Projection from measurement to local system
@@ -400,9 +401,10 @@ void GblPoint::addLocals(const Eigen::MatrixBase<Derivative>& aDerivatives) {
 }
 
 template<typename Derivative>
-void GblPoint::addGlobals(const std::vector<int> &aLabels,
+    void GblPoint::addGlobals(const std::vector<int> &aLabels,
 		const Eigen::MatrixBase<Derivative>& aDerivatives) {
-	if (measDim) {
+    
+    if (measDim) {
 		globalLabels = aLabels;
 		globalDerivatives.resize(aDerivatives.rows(), aDerivatives.cols());
 		if (transFlag) {
@@ -412,6 +414,8 @@ void GblPoint::addGlobals(const std::vector<int> &aLabels,
 		}
 
 	}
+    std::cout<<"globalDerivatives"<<std::endl;
+    std::cout<<globalDerivatives<<std::endl;
 }
 
 }

@@ -65,6 +65,19 @@ extern "C" {
         
         return (int) self->isValid();
     }
+
+    void GblTrajectory_printTrajectory(GblTrajectory* self, int level) {
+        return self->printTrajectory();
+    }
+
+    void GblTrajectory_printData(GblTrajectory* self) {
+        return self->printData();
+    }
+    
+    void GblTrajectory_printPoints(GblTrajectory* self, int level) {
+        return self->printPoints(level);
+    }
+
 }
 
 
