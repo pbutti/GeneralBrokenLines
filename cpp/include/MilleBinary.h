@@ -81,17 +81,21 @@ namespace gbl {
 class MilleBinary {
 public:
 	MilleBinary(const std::string& fileName = "milleBinaryISN.dat",
-			bool doublePrec = false, unsigned int aSize = 2000);
+                bool doublePrec = false, unsigned int aSize = 2000);
 	virtual ~MilleBinary();
 	void addData(double aMeas, double aErr, unsigned int numLocal,
-			unsigned int* indLocal, double* derLocal,
-			const std::vector<int> &labGlobal,
-			const std::vector<double> &derGlobal);
-	void writeRecord();
+                 unsigned int* indLocal, double* derLocal,
+                 const std::vector<int> &labGlobal,
+                 const std::vector<double> &derGlobal);
+    
+    void Close();
+    void writeRecord();
+    
+    
 
 private:
-	std::ofstream binaryFile; ///< Binary File
-	std::vector<int> intBuffer; ///< Integer buffer
+    std::ofstream binaryFile; ///< Binary File
+    std::vector<int> intBuffer; ///< Integer buffer
 	std::vector<float> floatBuffer; ///< Float buffer
 	std::vector<double> doubleBuffer; ///< Double buffer
 	bool doublePrecision; ///< Flag for storage in as *double* values

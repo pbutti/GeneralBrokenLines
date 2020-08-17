@@ -87,6 +87,8 @@ public:
 			double& newZ0) const;
 	GblHelixPrediction getPrediction(const Eigen::Vector3d& refPos,
 			const Eigen::Vector3d& uDir, const Eigen::Vector3d& vDir) const;
+    GblHelixPrediction* getPredictionPtr(const Eigen::Vector3d& refPos,
+                                         const Eigen::Vector3d& uDir, const Eigen::Vector3d& vDir) const;
 
 private:
 	const double rinv; ///< curvature (1/Radius)
@@ -107,9 +109,9 @@ private:
 class GblDetectorLayer {
 public:
 	GblDetectorLayer(const std::string aName, const unsigned int aLayer,
-			const int aDim, const double thickness, Eigen::Vector3d& aCenter,
-			Eigen::Vector2d& aResolution, Eigen::Vector2d& aPrecision,
-			Eigen::Matrix3d& measTrafo, Eigen::Matrix3d& alignTrafo);
+			const int aDim, const double thickness, const Eigen::Vector3d& aCenter,
+			const Eigen::Vector2d& aResolution, const Eigen::Vector2d& aPrecision,
+			const Eigen::Matrix3d& measTrafo, const Eigen::Matrix3d& alignTrafo);
 	virtual ~GblDetectorLayer();
 	void print() const;
 	unsigned int getLayerID() const;

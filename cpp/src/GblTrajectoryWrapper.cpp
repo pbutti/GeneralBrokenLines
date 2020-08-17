@@ -3,10 +3,6 @@
 using namespace gbl;
 using namespace Eigen;
 
-
-
-
-
 extern "C" {
     
     GblTrajectory* GblTrajectoryCtor(int flagCurv, int flagU1dir, int flagU2dir) {
@@ -77,6 +73,33 @@ extern "C" {
     void GblTrajectory_printPoints(GblTrajectory* self, int level) {
         return self->printPoints(level);
     }
+
+    //Only 5-vector and 5x5 cov matrix.
+    void GblTrajectory_getResults(GblTrajectory* self, int aSignedLabel, double* localPar, int* nLocalPar,
+                                  double * localCov, int* sizeLocalCov) {
+
+        Eigen::VectorXd e_localPar(5);
+        Eigen::MatrixXd e_localCov(5,5);
+        
+        self->getResults(aSignedLabel, e_localPar, e_localCov);
+
+        //std::cout<<"gblTrajectoryWrapper::getResults"<<std::endl;
+        //std::cout<<e_localPar<<std::endl;
+        //std::cout<<e_localCov<<std::endl;
+        
+        Map<Vector5d>(localPar, 5) = e_localPar;
+        Map<Matrix5d>(localCov, 5, 5) = e_localCov; 
+        *nLocalPar = 5;
+        *sizeLocalCov = 5;
+        
+    }
+
+    void GblTrajectory_milleOut(GblTrajectory* self, MilleBinary* millebinary) {
+        self->milleOut(*millebinary);
+    }
+
+    
+    
 
 }
 

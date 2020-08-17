@@ -29,11 +29,6 @@ extern "C" {
         return self->getMeasPrecMin();
     }
     
-    //Just for test
-    void GblPoint_addJacobian(const GblPoint* self, double *array, int rows, int cols) {
-        Map<Matrix5d> jacobian(array,rows,cols);
-    }
-    
     //Only supporting:
     //2D position residual
     //2x2 projection matrix
@@ -70,24 +65,34 @@ extern "C" {
         Map<Eigen::Matrix<double,1,6> > derivatives(derArray,1,6);
         self->addGlobals(aLabels, derivatives);
     }
+
+    int GblPoint_getNumGlobals(GblPoint* self) {
+        return self->getNumGlobals();
+    }
     
+    //TODO revisit these!
+
+    //Should I add the number of nlabels?
+    void GblPoint_getGlobalLabels(GblPoint* self, int* labels) {
+        
+        std::vector<int> glabels;
+        self->getGlobalLabels(glabels);
+        
+        for (unsigned int il = 0 ; il < glabels.size(); il++) {
+            labels[il] = glabels.at(il);
+        }
+    }  
+
+    //Should I add the number of derivatives?
+    void GblPoint_getGlobalDerivatives(GblPoint* self, double* gders) {
+        
+        int ngders = self->getNumGlobals();
+        Eigen::MatrixXd e_gders(ngders,ngders);
+        self->getGlobalDerivatives(e_gders);
+        
+        Map<MatrixXd>(gders,ngders,ngders) = e_gders;
+                
+    }
 
 }
-
-
-/*
-extern "C" void GblPoint_addMeasurement(const GblPoint* self, double projArray[], double resArray[], double precArray[], double minPrecision = 0.) {
-    //form the Eigen matrices
-}
-*/
-
-/*
-extern "C" void GblPoint_addMeasurement(const GblPoint* self, double projArray[], double resArray[], double precArray[]) {
-    return GblPoint_addMeasurement(self,projArray,resArray,precArray,0.);
-}
-*/  
-
-
-
-
 

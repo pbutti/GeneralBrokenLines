@@ -414,8 +414,6 @@ template<typename Derivative>
 		}
 
 	}
-    std::cout<<"globalDerivatives"<<std::endl;
-    std::cout<<globalDerivatives<<std::endl;
 }
 
 }

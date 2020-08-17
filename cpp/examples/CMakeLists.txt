@@ -7,5 +7,5 @@ MACRO( ADD_PATHFINDER_EXAMPLE _name )
     INSTALL( TARGETS ${_name} DESTINATION bin )
 ENDMACRO()
 
-ADD_PATHFINDER_EXAMPLE( GBLpp GBLpp.cpp exampleUtil.cpp example1.cpp
+ADD_PATHFINDER_EXAMPLE( GBLpp GBLpp.cpp example1.cpp
 example3.cpp exampleSit.cpp)

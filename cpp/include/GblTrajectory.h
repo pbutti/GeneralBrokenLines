@@ -164,6 +164,10 @@ public:
 	void printTrajectory(unsigned int level = 0) const;
 	void printPoints(unsigned int level = 0) const;
 	void printData() const;
+    
+    void getPoints(std::vector<GblPoint> &aPointList) const;
+    void getPoints(std::vector< std::vector <GblPoint> > &aPointList) const;
+
 
 private:
 	unsigned int numAllPoints; ///< Number of all points on trajectory
