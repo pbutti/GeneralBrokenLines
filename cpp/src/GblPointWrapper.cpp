@@ -77,20 +77,28 @@ extern "C" {
         
         std::vector<int> glabels;
         self->getGlobalLabels(glabels);
+
+        //std::cout<<"GblPointWrapper::glabels"<<std::endl;
         
         for (unsigned int il = 0 ; il < glabels.size(); il++) {
             labels[il] = glabels.at(il);
+            //std::cout<<glabels.at(il)<<std::endl;
         }
     }  
-
-    //Should I add the number of derivatives?
+    
+    //Should I add the number of derivatives? -  Row/Col? CHECK CHECK CHECK
     void GblPoint_getGlobalDerivatives(GblPoint* self, double* gders) {
         
         int ngders = self->getNumGlobals();
-        Eigen::MatrixXd e_gders(ngders,ngders);
+        Eigen::MatrixXd e_gders(1,ngders);
         self->getGlobalDerivatives(e_gders);
         
-        Map<MatrixXd>(gders,ngders,ngders) = e_gders;
+        //std::cout<<"GblPointWrapper::e_ders"<<std::endl;
+        //std::cout<<e_gders<<std::endl;
+
+        Map<MatrixXd>(gders,1,ngders) = e_gders;
+        
+        
                 
     }
 
