@@ -56,13 +56,13 @@ extern "C" {
         self->addScatterer(aResiduals,aPrecision);
     }
     
-    //Add global derivatives (6x6 only!) - FIX FIX FIX 
+    
     void GblPoint_addGlobals(GblPoint* self, int *labels, int nlabels, double* derArray) {
         std::vector<int> aLabels;
-        for (int i=0; i<6; i++) {
+        for (int i=0; i<nlabels; i++) {
             aLabels.push_back(labels[i]);
         }
-        Map<Eigen::Matrix<double,1,6> > derivatives(derArray,1,6);
+        Map<Eigen::MatrixXd> derivatives(derArray,1,nlabels);
         self->addGlobals(aLabels, derivatives);
     }
 
