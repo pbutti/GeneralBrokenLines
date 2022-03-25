@@ -51,6 +51,37 @@ extern "C" {
         
     }
     
+    //Composed trajectory constructor for 2 body decay
+
+    GblTrajectory* GblTrajectoryCtorPtrComposed(GblPoint* points_1[], int npoints_1, double trafo_1[],
+                                                GblPoint* points_2[], int npoints_2, double trafo_2[]) {
+        
+        std::vector<std::pair<std::vector<GblPoint>, Eigen::MatrixXd> > pointsAndTransList;
+
+        //first track
+        std::vector<GblPoint> points_1;
+        for (int i=0; i<npoints_1; i++) {
+            //get the point pointer
+            GblPoint* gblpoint = points_1[i];
+            //add it to the vector 
+            points_1.push_back(*(gblpoint));
+        }
+
+        MatrixXd inner_1(2,3);
+                
+        //second track
+        std::vector<GblPoint> points_2;
+        for (int i=0; i<npoints_2; i++) {
+            //get the point pointer
+            GblPoint* gblpoint = points_2[i];
+            //add it to the vector 
+            points_1.push_back(*(gblpoint));
+        }
+        
+        return nullptr;
+
+    }
+
     void GblTrajectory_fit(GblTrajectory* self, double* Chi2, int* Ndf, double* lostWeight, char* c_optionList, unsigned int aLabel) {
         
         std::string optionList(c_optionList);
@@ -94,6 +125,33 @@ extern "C" {
         
     }
 
+    //Wrapper to get the residuals - Assume 2d residuals max
+
+    void GblTrajectory_getMeasResults(GblTrajectory* self, int aLabel, int* numData, 
+                                      double* aResiduals, double* aMeasErrors, double* aResErrors, 
+                                      double* aDownWeights) {
+        
+        Eigen::VectorXd e_aResiduals(2);
+        Eigen::VectorXd e_aMeasErrors(2);
+        Eigen::VectorXd e_aResErrors(2);
+        Eigen::VectorXd e_aDownWeights(2);
+        int num_data = 0;
+        
+        unsigned int out = self->getMeasResults(aLabel, numData, num_data, e_aResiduals, e_aMeasErrors,
+                                                e_aResErrors, e_aDownWeights);
+        
+        *numData = num_data;
+        
+        for (unsigned int i = 0; i < num_data; i++) {
+            aResiduals[i] = e_aResiduals(i);
+            aMeasErrors[i] = e_aMeasErrors(i);
+            aResErrors[i] = e_aResErrors(i);
+            aDownWeights[i] = e_aDownWeights(i);
+        }
+        
+    }
+    
+    
     void GblTrajectory_milleOut(GblTrajectory* self, MilleBinary* millebinary) {
         self->milleOut(*millebinary);
     }
