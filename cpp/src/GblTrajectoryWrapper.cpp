@@ -57,28 +57,53 @@ extern "C" {
                                                 GblPoint* points_2[], int npoints_2, double trafo_2[]) {
         
         std::vector<std::pair<std::vector<GblPoint>, Eigen::MatrixXd> > pointsAndTransList;
-
+        
         //first track
-        std::vector<GblPoint> points_1;
+        std::vector<GblPoint> points_trk_1;
+        
         for (int i=0; i<npoints_1; i++) {
             //get the point pointer
             GblPoint* gblpoint = points_1[i];
             //add it to the vector 
-            points_1.push_back(*(gblpoint));
+            points_trk_1.push_back(*(gblpoint));
         }
-
+        
         MatrixXd inner_1(2,3);
-                
+        inner_1(0,0)=trafo_1[0];
+        inner_1(0,1)=trafo_1[1];
+        inner_1(0,2)=trafo_1[2];
+
+        inner_1(1,0)=trafo_1[3];
+        inner_1(1,1)=trafo_1[4];
+        inner_1(1,2)=trafo_1[5];
+
+        std::pair<std::vector<GblPoint>, MatrixXd> track_trafo_1 = std::make_pair(points_trk_1, inner_1);
+        
         //second track
-        std::vector<GblPoint> points_2;
+        std::vector<GblPoint> points_trk_2;
+        
         for (int i=0; i<npoints_2; i++) {
             //get the point pointer
             GblPoint* gblpoint = points_2[i];
             //add it to the vector 
-            points_1.push_back(*(gblpoint));
+            points_trk_2.push_back(*(gblpoint));
         }
+
+        MatrixXd inner_2(2,3);
+        inner_2(0,0)=trafo_2[0];
+        inner_2(0,1)=trafo_2[1];
+        inner_2(0,2)=trafo_2[2];
+
+        inner_2(1,0)=trafo_2[3];
+        inner_2(1,1)=trafo_2[4];
+        inner_2(1,2)=trafo_2[5];
+
+        std::pair<std::vector<GblPoint>, MatrixXd> track_trafo_2 = std::make_pair(points_trk_2, inner_2);
+
+        pointsAndTransList.push_back(track_trafo_1);
+        pointsAndTransList.push_back(track_trafo_2);
         
-        return nullptr;
+        return new GblTrajectory(pointsAndTransList);
 
     }
 
@@ -135,9 +160,9 @@ extern "C" {
         Eigen::VectorXd e_aMeasErrors(2);
         Eigen::VectorXd e_aResErrors(2);
         Eigen::VectorXd e_aDownWeights(2);
-        int num_data = 0;
+        unsigned int num_data = 0;
         
-        unsigned int out = self->getMeasResults(aLabel, numData, num_data, e_aResiduals, e_aMeasErrors,
+        unsigned int out = self->getMeasResults(aLabel, num_data, e_aResiduals, e_aMeasErrors,
                                                 e_aResErrors, e_aDownWeights);
         
         *numData = num_data;
