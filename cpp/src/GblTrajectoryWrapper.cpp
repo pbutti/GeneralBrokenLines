@@ -112,10 +112,19 @@ extern "C" {
         std::string optionList(c_optionList);
         self->fit(*Chi2, *Ndf, *lostWeight, optionList,aLabel);
     }
-    
+  
+    void GblTrajectory_delete(GblTrajectory* self) {
+      if (self)
+        delete self;
+    }
+
     int GblTrajectory_isValid(GblTrajectory* self) {
         
         return (int) self->isValid();
+    }
+
+    int GblTrajectory_getNumPoints(GblTrajectory* self) {
+      return (int) self->getNumPoints();
     }
 
     void GblTrajectory_printTrajectory(GblTrajectory* self, int level) {
